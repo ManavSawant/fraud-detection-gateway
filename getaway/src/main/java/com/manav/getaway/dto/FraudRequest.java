@@ -1,14 +1,14 @@
 package com.manav.getaway.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class FraudRequest {
 
     private String ipAddress;
     private String userAgent;
     private String path;
 
-    public FraudRequest(String ipAddress, String userAgent, String path) {
-        this.ipAddress = ipAddress;
-        this.userAgent = userAgent;
-        this.path = path;
-    }
 }

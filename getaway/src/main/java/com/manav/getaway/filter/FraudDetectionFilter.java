@@ -35,6 +35,8 @@ public class FraudDetectionFilter implements GlobalFilter, Ordered {
         return webClientBuilder.build()
                 .post()
                 .uri("http://localhost:8082/fraud/check")
+                .header("Content-Type", "application/json")
+                .bodyValue(fraudRequest)
                 .retrieve()
                 .bodyToMono(FraudResponse.class)
 

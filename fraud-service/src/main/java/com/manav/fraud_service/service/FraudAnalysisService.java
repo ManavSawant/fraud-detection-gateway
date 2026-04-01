@@ -29,6 +29,7 @@ public class FraudAnalysisService {
     }
 
     public FraudResponseDto analyze(FraudRequestDto request){
+
         double riskScore = calculateRiskScore(request);
 
         if(riskScore > 0.8){
