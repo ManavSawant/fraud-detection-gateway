@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class FraudAnalysisService {
 
+    private final AiFraudService aiFraudService;
+
     private double calculateRiskScore(FraudRequestDto request) {
         double score = 0.1;
 
@@ -30,14 +32,17 @@ public class FraudAnalysisService {
 
     public FraudResponseDto analyze(FraudRequestDto request){
 
-        double riskScore = calculateRiskScore(request);
+        double ruleScore = calculateRiskScore(request);
+        double aiScore = aiFraudService.getAiScore(request);
 
-        if(riskScore > 0.8){
-            return new FraudResponseDto("BLOCK", riskScore,"High risk detected");
+        double finalScore = 0.7 * aiScore + 0.3 * ruleScore;
+
+        if(finalScore > 0.8){
+            return new FraudResponseDto("BLOCK", finalScore,"High risk detected");
         }
-        if( riskScore > 0.5){
-            return new FraudResponseDto("FLAG", riskScore,"suspicious activity");
+        if( finalScore > 0.5){
+            return new FraudResponseDto("FLAG", finalScore,"Suspicious activity");
         }
-        return new FraudResponseDto("ALLOW", riskScore,"low risk detected");
+        return new FraudResponseDto("ALLOW", finalScore,"Low risk detected");
     }
 }
